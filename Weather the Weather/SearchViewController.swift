@@ -24,6 +24,7 @@ class SearchViewController: UIViewController, UISearchBarDelegate,UITableViewDel
        
         // Do any additional setup after loading the view.
     }
+    
     //array with  the search results
     var filterArray = []
     //dictionary with the results we need to parse
@@ -34,8 +35,10 @@ class SearchViewController: UIViewController, UISearchBarDelegate,UITableViewDel
         
         manager.requestSerializer.setValue("text/html", forHTTPHeaderField: "Content-Type")
         manager.responseSerializer = AFHTTPResponseSerializer()
+        //replace spaces with query friendly symbol
+       let processedSearchText = searchText.stringByReplacingOccurrencesOfString(" ", withString: "+")
         // address of what we are searching
-        var searchId:String = queryString + searchText
+        var searchId:String = queryString + processedSearchText
            var error: NSError?
         manager.GET(searchId, parameters: nil, success: { (operation, response) -> Void in
             var jsonData:NSData = response as! NSData
